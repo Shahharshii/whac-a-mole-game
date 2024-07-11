@@ -6,18 +6,12 @@ const WhacAMole = () => {
     const [currentMole, setCurrentMole] = useState<number | null>(null);
     const [currentPlant, setCurrentPlant] = useState<number | null>(null);
     const [gameOver, setGameOver] = useState<boolean>(false);
-    const [timeLeft, setTimeLeft] = useState<number>(30); // 30 seconds timer
+    const [timeLeft, setTimeLeft] = useState<number>(60); // 60 seconds timer
 
     useEffect(() => {
-        const moleInterval = setInterval(() => {
+        const gameInterval = setInterval(() => {
             if (!gameOver) {
-                setMole();
-            }
-        }, 1500);
-
-        const plantInterval = setInterval(() => {
-            if (!gameOver) {
-                setPlant();
+                setMoleAndPlant();
             }
         }, 2000);
 
@@ -26,33 +20,53 @@ const WhacAMole = () => {
                 if (prevTime <= 1) {
                     setGameOver(true);
                     clearInterval(timerInterval);
-                    clearInterval(moleInterval);
-                    clearInterval(plantInterval);
+                    clearInterval(gameInterval);
                 }
                 return prevTime - 1;
             });
         }, 1000);
 
         return () => {
-            clearInterval(moleInterval);
-            clearInterval(plantInterval);
+            clearInterval(gameInterval);
             clearInterval(timerInterval);
         };
     }, [gameOver]);
 
-    const setMole = () => {
-        let molePosition;
+    useEffect(() => {
+        const cursor = document.querySelector('.cursor') as HTMLElement;
+
+        const handleMouseMove = (e: MouseEvent) => {
+            cursor.style.top = `${e.pageY}px`;
+            cursor.style.left = `${e.pageX}px`;
+        };
+
+        const handleMouseDown = () => {
+            cursor.classList.add('active');
+        };
+
+        const handleMouseUp = () => {
+            cursor.classList.remove('active');
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mousedown', handleMouseDown);
+        window.addEventListener('mouseup', handleMouseUp);
+
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mousedown', handleMouseDown);
+            window.removeEventListener('mouseup', handleMouseUp);
+        };
+    }, []);
+
+    const setMoleAndPlant = () => {
+        let molePosition, plantPosition;
         do {
             molePosition = Math.floor(Math.random() * 9);
-        } while (molePosition === currentPlant);
-        setCurrentMole(molePosition);
-    };
-
-    const setPlant = () => {
-        let plantPosition;
-        do {
             plantPosition = Math.floor(Math.random() * 9);
-        } while (plantPosition === currentMole);
+        } while (molePosition === plantPosition);
+
+        setCurrentMole(molePosition);
         setCurrentPlant(plantPosition);
     };
 
@@ -106,6 +120,7 @@ const WhacAMole = () => {
                 </div>
                 {gameOver && <h2 className="text-xl mt-4 font-bold text-white" style={{ fontWeight: 'bold', fontSize: '30px', color: 'purple' }}>Game Over! Your final score is: {score}</h2>}
             </div>
+            <div className="cursor"></div>
         </div>
     );
 };

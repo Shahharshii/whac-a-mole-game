@@ -24,6 +24,34 @@ body {
     background-repeat: no-repeat;
 }
 
+@keyframes rise {
+    0% {
+        transform: translateX(-50%) translateY(100%);
+    }
+
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.cursor {
+    height: 110px;
+    width: 100px;
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    background-image: url('../../public/images/hammer.png');
+    background-size: 100% 100%;
+    transform: translate(-20%, -20%);
+    transition: transform .1s;
+    pointer-events: none;
+}
+
+.cursor.active {
+    transform: translate(-20%, -20%) rotate(-45deg);
+}
+
+
 #board div img {
     @apply w-[100px] h-[100px] select-none;
 }
