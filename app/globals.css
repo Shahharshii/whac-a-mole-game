@@ -2,10 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@keyframes rise {
+  0% {
+    transform: translateX(-50%) translateY(100%);
+  }
+
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.cursor {
+  height: 150px;
+  width: 120px;
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  background-image: url('.././public/images/hammer2.png');
+  background-size: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+
+
+
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+
   .flexCenter {
     @apply flex items-center justify-center;
   }
@@ -17,9 +45,11 @@
   .flexColBetween {
     @apply flex flex-col items-start justify-between;
   }
+
   .flexColCenter {
     @apply flex flex-col items-center justify-between;
   }
+
   .flexCol {
     @apply flex flex-col items-start justify-start;
   }
