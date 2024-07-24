@@ -11,7 +11,7 @@ git clone https://github.com/haider-patanwala/nextjs-app-template.git
 cd nextjs-app-template
 ```
 
-or create new repository from template by clicking on the link below 👇
+or create new repository from template by clicking on the link below test 👇
 
 [nextjs-template](https://github.com/new?template_name=nextjs-template&template_owner=haider-patanwala "https://github.com/new?template_name=nextjs-template&template_owner=haider-patanwala")
 
