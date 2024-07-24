@@ -1,6 +1,8 @@
+
+
 "use client";
 import { useEffect, useState } from 'react';
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 
 const WhacAMole = () => {
     const [score, setScore] = useState<number>(0);
@@ -9,7 +11,7 @@ const WhacAMole = () => {
     const [gameOver, setGameOver] = useState<boolean>(false);
     const [timeLeft, setTimeLeft] = useState<number>(60); // 60 seconds timer
     const [isCursorInBoard, setIsCursorInBoard] = useState<boolean>(false);
-
+    const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
 
     useEffect(() => {
         const gameInterval = setInterval(() => {
@@ -44,11 +46,11 @@ const WhacAMole = () => {
         };
 
         const handleMouseDown = () => {
-            cursor.classList.add('active');
+            setIsMouseDown(true);
         };
 
         const handleMouseUp = () => {
-            cursor.classList.remove('active');
+            setIsMouseDown(false);
         };
 
         const handleMouseEnter = () => {
@@ -111,6 +113,11 @@ const WhacAMole = () => {
         setTimeLeft(60);
     };
 
+    const hammerVariants = {
+        initial: { rotate: 0 },
+        active: { rotate: -45 },
+    };
+
     return (
         <div className="min-h-screen flex items-center justify-center text-center bg-gray-100">
             <div className="bg-white p-8 rounded shadow-lg text-center">
@@ -160,13 +167,15 @@ const WhacAMole = () => {
             </div>
             <motion.div
                 id="hammer"
-                className={`cursor  z-50 active:-rotate-45 bg-no-repeat transition-transform duration-1000  translate-x-[-20%] translate-y-[-20%] ${isCursorInBoard ? 'block' : 'hidden'}`}></motion.div>
-
-        </div >
+                transition={{ duration: 0.1}}
+                className={`cursor z-50 bg-no-repeat transition-transform duration-50 translate-x-[-20%] translate-y-[-20%] ${isCursorInBoard ? 'block' : 'hidden'}`}
+                animate={isMouseDown ? "active" : "initial"}
+                variants={hammerVariants}
+            ></motion.div>
+        </div>
     );
 };
 
 export default WhacAMole;
-
 
 
